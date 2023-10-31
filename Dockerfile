@@ -16,7 +16,7 @@ FROM alpine
 
 WORKDIR /build
 
-COPY --from=builder /build/locator /build/locator
+COPY --from=builder /locator /build/locator
 
 EXPOSE 8001
 
