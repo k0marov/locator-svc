@@ -1,7 +1,6 @@
 package formulas
 
 import (
-	"gitlab.com/samkomarov/locator-svc.git/internal/service"
 	"math"
 )
 
@@ -15,11 +14,11 @@ const earthRadiusMeters = float64(6378100)
 const piRad = math.Pi / 180
 
 // MetersDistance returns distance from p1 to p2 in meters
-func MetersDistance(p1, p2 service.GeoPoint) float64 {
-	la1 := p1.Latitude * piRad
-	lo1 := p1.Longitude * piRad
-	la2 := p2.Latitude * piRad
-	lo2 := p2.Longitude * piRad
+func MetersDistance(lat1, long1, lat2, long2 float64) float64 {
+	la1 := lat1 * piRad
+	lo1 := long2 * piRad
+	la2 := lat2 * piRad
+	lo2 := long2 * piRad
 
 	// calculate
 	h := hsin(la2-la1) + math.Cos(la1)*math.Cos(la2)*hsin(lo2-lo1)
