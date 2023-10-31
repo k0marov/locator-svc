@@ -20,6 +20,12 @@ func NewServer(svc ILocatorService) http.Handler {
 }
 
 func (s *Server) defineEndpoints() {
+	s.r.Route("/api/v1/locator", func(r chi.Router) {
+		r.Get("/missing", s.GetMissing)
+	})
+}
+
+func (s *Server) GetMissing(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
