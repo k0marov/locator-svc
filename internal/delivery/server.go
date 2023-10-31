@@ -5,6 +5,7 @@ import (
 	"gitlab.com/samkomarov/locator-svc.git/internal/core"
 	"gitlab.com/samkomarov/locator-svc.git/internal/service"
 	"net/http"
+	"strconv"
 )
 import "github.com/go-chi/chi/v5"
 
@@ -30,7 +31,28 @@ func (s *Server) defineEndpoints() {
 }
 
 func (s *Server) GetMissing(w http.ResponseWriter, r *http.Request) {
-	missing, err := s.svc.GetRelevantMissing(service.GeoPoint{})
+	urlQuery := r.URL.Query()
+	latitude, err := strconv.ParseFloat(urlQuery.Get("latitude"), 64)
+	if err != nil {
+		core.WriteErrorResponse(w, &core.ClientError{
+			DisplayMessage: "couldn't parse 'latitude' url parameter as float",
+			HTTPCode:       http.StatusBadRequest,
+		})
+		return
+	}
+	longitude, err := strconv.ParseFloat(urlQuery.Get("longitude"), 64)
+	if err != nil {
+		core.WriteErrorResponse(w, &core.ClientError{
+			DisplayMessage: "couldn't parse 'longitude' url parameter as float",
+			HTTPCode:       http.StatusBadRequest,
+		})
+		return
+	}
+
+	missing, err := s.svc.GetRelevantMissing(service.GeoPoint{
+		Latitude:  latitude,
+		Longitude: longitude,
+	})
 	if err != nil {
 		core.WriteErrorResponse(w, err)
 		return
