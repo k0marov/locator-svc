@@ -1,10 +1,10 @@
 package service
 
-import "time"
+import "gitlab.com/samkomarov/locator-svc.git/internal/core"
 
 type MissingPerson struct {
 	VerticalURL string     `json:"vertical_url"`
-	DateOfLoss  time.Time  `json:"date_of_loss"`
+	DateOfLoss  core.Date  `json:"date_of_loss"`
 	GeoPoints   []GeoPoint `json:"geo_points"`
 }
 
