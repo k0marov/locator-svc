@@ -16,9 +16,9 @@ FROM alpine
 
 WORKDIR /build
 
-COPY --from=builder /locator /build/locator
+COPY --from=builder /locator /locator
 
-EXPOSE 8001
+EXPOSE 8000
 
 # Run
-ENTRYPOINT /build/locator
+ENTRYPOINT /locator
