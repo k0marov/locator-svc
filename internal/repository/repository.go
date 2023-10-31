@@ -3,17 +3,17 @@ package repository
 import (
 	"encoding/json"
 	"fmt"
+	"gitlab.com/samkomarov/locator-svc.git/internal/config"
 	"gitlab.com/samkomarov/locator-svc.git/internal/service"
-	"gitlab.com/samkomarov/locator-svc.git/internal/setup"
 	"io"
 	"net/http"
 )
 
 type ExternalAPILocatorRepo struct {
-	cfg setup.ExternalAPILocatorConfig
+	cfg config.ExternalAPILocatorConfig
 }
 
-func NewExternalAPILocatorRepo(cfg setup.ExternalAPILocatorConfig) *ExternalAPILocatorRepo {
+func NewExternalAPILocatorRepo(cfg config.ExternalAPILocatorConfig) *ExternalAPILocatorRepo {
 	return &ExternalAPILocatorRepo{cfg}
 }
 

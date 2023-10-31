@@ -18,7 +18,7 @@ func NewLocatorService(repo LocatorRepo) *LocatorService {
 func (l *LocatorService) GetRelevantMissing(aroundPoint GeoPoint) ([]MissingPerson, error) {
 	allMissing, err := l.repo.GetAllMissing()
 	if err != nil {
-		return nil, fmt.Errorf("while getting all missing from repo: %w")
+		return nil, fmt.Errorf("while getting all missing from repo: %w", err)
 	}
 	// TODO implement relevancy ordering
 	return allMissing, nil

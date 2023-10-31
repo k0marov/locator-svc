@@ -1,10 +1,11 @@
 package main
 
 import (
+	"gitlab.com/samkomarov/locator-svc.git/internal/config"
 	"gitlab.com/samkomarov/locator-svc.git/internal/setup"
 )
 
 func main() {
-	cfg := setup.ReadConfigFromEnv()
+	cfg := config.ReadConfigFromEnv()
 	setup.InitializeAndStart(cfg)
 }

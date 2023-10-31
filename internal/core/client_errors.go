@@ -1,4 +1,4 @@
-package setup
+package core
 
 import (
 	"encoding/json"
@@ -27,5 +27,5 @@ func WriteErrorResponse(w http.ResponseWriter, e error) {
 		return
 	}
 	w.WriteHeader(http.StatusInternalServerError)
-	log.Printf("ERROR: %v", e.Error())
+	log.Printf("ERROR: %v", e)
 }
