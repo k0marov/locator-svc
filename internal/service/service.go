@@ -1,6 +1,9 @@
 package service
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+)
 
 type LocatorRepo interface {
 	GetAllMissing() ([]MissingPerson, error)
@@ -20,6 +23,8 @@ func (l *LocatorService) GetRelevantMissing(aroundPoint GeoPoint) ([]MissingPers
 	if err != nil {
 		return nil, fmt.Errorf("while getting all missing from repo: %w", err)
 	}
-	// TODO implement relevancy ordering
+	sort.Slice(allMissing, func(i, j int) bool {
+		return personRelevance(aroundPoint, allMissing[i]) > personRelevance(aroundPoint, allMissing[j])
+	})
 	return allMissing, nil
 }
