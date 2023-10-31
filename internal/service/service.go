@@ -11,7 +11,8 @@ func NewLocatorService(repo LocatorRepo) *LocatorService {
 	return &LocatorService{repo: repo}
 }
 
-func (l LocatorService) GetMissing() ([]MissingPerson, error) {
+// GetRelevantMissing returns missing people near `aroundPoint` obtained from LocatorRepo ordered by relevancy
+func (l LocatorService) GetRelevantMissing(aroundPoint GeoPoint) ([]MissingPerson, error) {
 	//TODO implement me
 	panic("implement me")
 }

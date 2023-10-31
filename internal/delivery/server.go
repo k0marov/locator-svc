@@ -7,7 +7,7 @@ import (
 import "github.com/go-chi/chi/v5"
 
 type ILocatorService interface {
-	GetMissing() ([]service.MissingPerson, error)
+	GetRelevantMissing(aroundPoint service.GeoPoint) ([]service.MissingPerson, error)
 }
 
 type Server struct {
