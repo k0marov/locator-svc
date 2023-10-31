@@ -1,5 +1,7 @@
 package service
 
+import "fmt"
+
 type LocatorRepo interface {
 	GetAllMissing() ([]MissingPerson, error)
 }
@@ -13,7 +15,11 @@ func NewLocatorService(repo LocatorRepo) *LocatorService {
 }
 
 // GetRelevantMissing returns missing people near `aroundPoint` obtained from LocatorRepo ordered by relevancy from highest to lowest
-func (l LocatorService) GetRelevantMissing(aroundPoint GeoPoint) ([]MissingPerson, error) {
-	//TODO implement me
-	panic("implement me")
+func (l *LocatorService) GetRelevantMissing(aroundPoint GeoPoint) ([]MissingPerson, error) {
+	allMissing, err := l.repo.GetAllMissing()
+	if err != nil {
+		return nil, fmt.Errorf("while getting all missing from repo: %w")
+	}
+	// TODO implement relevancy ordering
+	return allMissing, nil
 }
