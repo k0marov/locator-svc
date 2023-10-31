@@ -1,11 +1,13 @@
 package delivery
 
 import (
+	"gitlab.com/samkomarov/locator-svc.git/internal/service"
 	"net/http"
 )
 import "github.com/go-chi/chi/v5"
 
 type ILocatorService interface {
+	GetMissing() ([]service.MissingPerson, error)
 }
 
 type Server struct {
