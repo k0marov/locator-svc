@@ -31,7 +31,7 @@ func (e *ExternalAPILocatorRepo) GetAllMissing() ([]service.MissingPerson, error
 	}
 	err = json.NewDecoder(resp.Body).Decode(&body)
 	if err != nil {
-		return nil, fmt.Errorf("while decoding external api's response body: %v", err)
+		return nil, fmt.Errorf("while decoding external api's response body: %w", err)
 	}
 	return body.Result, nil
 }
