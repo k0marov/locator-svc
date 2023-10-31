@@ -1,4 +1,4 @@
-package internal
+package setup
 
 import (
 	"github.com/kelseyhightower/envconfig"
