@@ -1,7 +1,9 @@
 package delivery
 
 import (
+	"encoding/json"
 	"gitlab.com/samkomarov/locator-svc.git/internal/service"
+	"gitlab.com/samkomarov/locator-svc.git/internal/setup"
 	"net/http"
 )
 import "github.com/go-chi/chi/v5"
@@ -28,6 +30,19 @@ func (s *Server) defineEndpoints() {
 }
 
 func (s *Server) GetMissing(w http.ResponseWriter, r *http.Request) {
+	missing, err := s.svc.GetRelevantMissing(service.GeoPoint{})
+	if err != nil {
+		setup.WriteErrorResponse(w, err)
+		return
+	}
+	err = json.NewEncoder(w).Encode(missing)
+	if err != nil {
+		setup.WriteErrorResponse(w, &setup.ClientError{
+			DisplayMessage: err.Error(),
+			HTTPCode:       http.StatusBadRequest,
+		})
+		return
+	}
 }
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
