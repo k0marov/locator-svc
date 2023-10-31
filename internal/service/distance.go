@@ -9,7 +9,7 @@ import (
 func personRelevance(point GeoPoint, person MissingPerson) float64 {
 	minDistance := math.Inf(1)
 	for _, personPosition := range person.GeoPoints {
-		d := formulas.MetersDistance(point, personPosition)
+		d := formulas.MetersDistance(point.Latitude, point.Longitude, personPosition.Latitude, personPosition.Longitude)
 		if d < minDistance {
 			minDistance = d
 		}
@@ -19,7 +19,7 @@ func personRelevance(point GeoPoint, person MissingPerson) float64 {
 
 // TODO: fine-tune formula for computing relevance
 func computeRelevance(distanceMeters float64, dateOfLoss time.Time) float64 {
-	daysDiff := time.Now().Sub(dateOfLoss).Hours() * 24
-	distanceMeters += 100000 * daysDiff // 10 km for each day
+	//daysDiff := time.Now().Sub(dateOfLoss).Hours() * 24
+	//distanceMeters += 100000 * daysDiff // 10 km for each day
 	return 1 / distanceMeters
 }
