@@ -14,8 +14,8 @@ func hsin(theta float64) float64 {
 const earthRadiusMeters = float64(6378100)
 const piRad = math.Pi / 180
 
-// HaversineDistance returns distance from p1 to p2 in meters
-func HaversineDistance(p1, p2 service.GeoPoint) float64 {
+// MetersDistance returns distance from p1 to p2 in meters
+func MetersDistance(p1, p2 service.GeoPoint) float64 {
 	la1 := p1.Latitude * piRad
 	lo1 := p1.Longitude * piRad
 	la2 := p2.Latitude * piRad
