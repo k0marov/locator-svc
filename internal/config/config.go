@@ -5,7 +5,7 @@ import (
 )
 
 type HTTPServerConfig struct {
-	Host string `default:"127.0.0.1:8080"`
+	Host string `default:":8080"`
 }
 
 type ExternalAPILocatorConfig struct {
@@ -20,5 +20,6 @@ type AppConfig struct {
 func ReadConfigFromEnv() AppConfig {
 	var cfg AppConfig
 	envconfig.MustProcess("locator", &cfg)
+	envconfig.Usage("locator", &cfg)
 	return cfg
 }
