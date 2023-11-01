@@ -2,6 +2,7 @@ package config
 
 import (
 	"github.com/kelseyhightower/envconfig"
+	"log"
 )
 
 type HTTPServerConfig struct {
@@ -21,5 +22,6 @@ func ReadConfigFromEnv() AppConfig {
 	var cfg AppConfig
 	envconfig.MustProcess("locator", &cfg)
 	envconfig.Usage("locator", &cfg)
+	log.Printf("got config values: %+v", cfg)
 	return cfg
 }
