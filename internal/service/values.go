@@ -1,11 +1,11 @@
 package service
 
-import "gitlab.com/samkomarov/locator-svc.git/internal/core"
+import "time"
 
 // MissingPerson is the main domain entity
 type MissingPerson struct {
 	PhotoURL   string
-	DateOfLoss core.Date
+	DateOfLoss time.Time
 	Locations  []GeoPoint
 	// Relevance is an indicator of how this person is relevant to the defined location
 	Relevance float64
