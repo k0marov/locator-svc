@@ -3,22 +3,27 @@ package repository
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/go-retryablehttp"
 	"gitlab.com/samkomarov/locator-svc.git/internal/config"
 	"gitlab.com/samkomarov/locator-svc.git/internal/service"
 	"io"
 	"net/http"
+	"time"
 )
 
 type ExternalAPILocatorRepo struct {
-	cfg config.ExternalAPILocatorConfig
+	cfg    config.ExternalAPILocatorConfig
+	client *retryablehttp.Client
 }
 
 func NewExternalAPILocatorRepo(cfg config.ExternalAPILocatorConfig) *ExternalAPILocatorRepo {
-	return &ExternalAPILocatorRepo{cfg}
+	client := retryablehttp.NewClient()
+	client.RetryWaitMax = 30 * time.Second
+	return &ExternalAPILocatorRepo{cfg, client}
 }
 
 func (e *ExternalAPILocatorRepo) GetAllMissing() ([]service.MissingPerson, error) {
-	resp, err := http.Get(e.cfg.EndpointURL)
+	resp, err := e.client.Get(e.cfg.EndpointURL)
 	if err != nil {
 		return nil, fmt.Errorf("while making request to external api: %w", err)
 	}
