@@ -37,7 +37,8 @@ func (l *LocatorService) GetRelevantMissing(aroundPoint GeoPoint) ([]MissingPers
 	}
 
 	sort.Slice(allMissing, func(i, j int) bool {
-		return allMissing[i].Relevance > allMissing[i].Relevance
+		return allMissing[i].Relevance > allMissing[j].Relevance
 	})
+
 	return allMissing[:min(Limit, len(allMissing))], nil
 }
