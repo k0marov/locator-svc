@@ -30,11 +30,11 @@ func NewExternalAPILocatorRepo(cfg config.ExternalAPILocatorConfig) *ExternalAPI
 	return &ExternalAPILocatorRepo{cfg, client, cacheClient}
 }
 
-func (e *ExternalAPILocatorRepo) GetAllMissing() ([]service.MissingPerson, error) {
+func (e *ExternalAPILocatorRepo) GetAllMissing() ([]service.LizaAlertPerson, error) {
 	missingCached, ok := e.cache.Get(missingCacheKey)
 	if ok {
 		log.Printf("got missing people info from cache")
-		return missingCached.([]service.MissingPerson), nil
+		return missingCached.([]service.LizaAlertPerson), nil
 	}
 	log.Printf("missing people cache expired, fetching from API")
 	missing, err := e.getAllMissingFromAPI()
@@ -45,7 +45,7 @@ func (e *ExternalAPILocatorRepo) GetAllMissing() ([]service.MissingPerson, error
 	return missing, nil
 }
 
-func (e *ExternalAPILocatorRepo) getAllMissingFromAPI() ([]service.MissingPerson, error) {
+func (e *ExternalAPILocatorRepo) getAllMissingFromAPI() ([]service.LizaAlertPerson, error) {
 	resp, err := e.client.Get(e.cfg.EndpointURL)
 	if err != nil {
 		return nil, fmt.Errorf("while making request to external api: %w", err)
@@ -55,7 +55,7 @@ func (e *ExternalAPILocatorRepo) getAllMissingFromAPI() ([]service.MissingPerson
 		return nil, fmt.Errorf("making request to external api returned %d: %s", resp.StatusCode, body)
 	}
 	var body struct {
-		Result []service.MissingPerson `json:"result"`
+		Result []service.LizaAlertPerson `json:"result"`
 	}
 	err = json.NewDecoder(resp.Body).Decode(&body)
 	if err != nil {
