@@ -19,7 +19,10 @@ func personRelevance(point GeoPoint, person MissingPerson) float64 {
 
 // TODO: fine-tune formula for computing relevance
 func computeRelevance(distanceKM float64, dateOfLoss time.Time) float64 {
-	//daysDiff := time.Now().Sub(dateOfLoss).Hours() / 24
-	//distanceKM += 100000 * daysDiff // 10 km for each day
-	return 1 / distanceKM
+	relevance := 1 / distanceKM
+	daysDiff := time.Now().Sub(dateOfLoss).Hours() / 24
+	if daysDiff > 30 {
+		relevance *= 0.5
+	}
+	return relevance
 }
