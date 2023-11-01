@@ -6,15 +6,15 @@ import (
 	"time"
 )
 
-func personRelevance(point GeoPoint, person MissingPerson) float64 {
+func personRelevance(target GeoPoint, locations []GeoPoint, dateOfLoss time.Time) float64 {
 	minDistance := math.Inf(1)
-	for _, personPosition := range person.Locations {
-		d := formulas.DistanceKM(point.Latitude, point.Longitude, personPosition.Latitude, personPosition.Longitude)
+	for _, personPosition := range locations {
+		d := formulas.DistanceKM(target.Latitude, target.Longitude, personPosition.Latitude, personPosition.Longitude)
 		if d < minDistance {
 			minDistance = d
 		}
 	}
-	return computeRelevance(minDistance, time.Time(person.DateOfLoss))
+	return computeRelevance(minDistance, dateOfLoss)
 }
 
 // TODO: fine-tune formula for computing relevance

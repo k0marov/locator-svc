@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"sort"
+	"time"
 )
 
 type LocatorRepo interface {
@@ -29,9 +30,9 @@ func (l *LocatorService) GetRelevantMissing(aroundPoint GeoPoint) ([]MissingPers
 	for i, m := range allMissingModels {
 		allMissing[i] = MissingPerson{
 			PhotoURL:   m.VerticalURL,
-			DateOfLoss: m.DateOfLoss,
+			DateOfLoss: time.Time(m.DateOfLoss),
 			Locations:  m.GeoPoints,
-			Relevance:  personRelevance(aroundPoint, allMissing[i]),
+			Relevance:  personRelevance(aroundPoint, m.GeoPoints, time.Time(m.DateOfLoss)),
 		}
 	}
 
