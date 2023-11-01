@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/go-retryablehttp"
+	"github.com/patrickmn/go-cache"
 	"gitlab.com/samkomarov/locator-svc.git/internal/config"
 	"gitlab.com/samkomarov/locator-svc.git/internal/service"
 	"io"
@@ -11,18 +12,37 @@ import (
 	"time"
 )
 
+const cacheExpirationInterval = 10 * time.Minute
+const missingCacheKey = "missing"
+
 type ExternalAPILocatorRepo struct {
 	cfg    config.ExternalAPILocatorConfig
 	client *retryablehttp.Client
+	cache  *cache.Cache
 }
 
 func NewExternalAPILocatorRepo(cfg config.ExternalAPILocatorConfig) *ExternalAPILocatorRepo {
 	client := retryablehttp.NewClient()
 	client.RetryWaitMax = 30 * time.Second
-	return &ExternalAPILocatorRepo{cfg, client}
+
+	cacheClient := cache.New(cacheExpirationInterval, cacheExpirationInterval/2)
+	return &ExternalAPILocatorRepo{cfg, client, cacheClient}
 }
 
 func (e *ExternalAPILocatorRepo) GetAllMissing() ([]service.MissingPerson, error) {
+	missing, ok := e.cache.Get(missingCacheKey)
+	if !ok {
+		var err error
+		missing, err = e.getAllMissingFromAPI()
+		if err != nil {
+			return nil, fmt.Errorf("while getting from api: %v", err)
+		}
+		e.cache.Set(missingCacheKey, missing, cache.DefaultExpiration)
+	}
+	return missing.([]service.MissingPerson), nil
+}
+
+func (e *ExternalAPILocatorRepo) getAllMissingFromAPI() ([]service.MissingPerson, error) {
 	resp, err := e.client.Get(e.cfg.EndpointURL)
 	if err != nil {
 		return nil, fmt.Errorf("while making request to external api: %w", err)

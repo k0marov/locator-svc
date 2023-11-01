@@ -10,4 +10,5 @@ require (
 require (
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-retryablehttp v0.7.4 // indirect
+	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
 )
