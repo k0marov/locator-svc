@@ -13,5 +13,6 @@ func InitializeAndStart(cfg config.AppConfig) {
 	repo := repository.NewExternalAPILocatorRepo(cfg.LocatorAPI)
 	svc := service.NewLocatorService(repo)
 	srv := delivery.NewServer(svc)
+	log.Printf("Listening at %s", cfg.HTTPServer.Host)
 	log.Print(http.ListenAndServe(cfg.HTTPServer.Host, srv))
 }

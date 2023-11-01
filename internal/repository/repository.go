@@ -8,6 +8,7 @@ import (
 	"gitlab.com/samkomarov/locator-svc.git/internal/config"
 	"gitlab.com/samkomarov/locator-svc.git/internal/service"
 	"io"
+	"log"
 	"net/http"
 	"time"
 )
@@ -30,16 +31,18 @@ func NewExternalAPILocatorRepo(cfg config.ExternalAPILocatorConfig) *ExternalAPI
 }
 
 func (e *ExternalAPILocatorRepo) GetAllMissing() ([]service.MissingPerson, error) {
-	missing, ok := e.cache.Get(missingCacheKey)
-	if !ok {
-		var err error
-		missing, err = e.getAllMissingFromAPI()
-		if err != nil {
-			return nil, fmt.Errorf("while getting from api: %v", err)
-		}
-		e.cache.Set(missingCacheKey, missing, cache.DefaultExpiration)
+	missingCached, ok := e.cache.Get(missingCacheKey)
+	if ok {
+		log.Printf("got missing people info from cache")
+		return missingCached.([]service.MissingPerson), nil
 	}
-	return missing.([]service.MissingPerson), nil
+	log.Printf("missing people cache expired, fetching from API")
+	missing, err := e.getAllMissingFromAPI()
+	if err != nil {
+		return nil, fmt.Errorf("while getting from api: %v", err)
+	}
+	e.cache.Set(missingCacheKey, missing, cache.DefaultExpiration)
+	return missing, nil
 }
 
 func (e *ExternalAPILocatorRepo) getAllMissingFromAPI() ([]service.MissingPerson, error) {
@@ -58,5 +61,6 @@ func (e *ExternalAPILocatorRepo) getAllMissingFromAPI() ([]service.MissingPerson
 	if err != nil {
 		return nil, fmt.Errorf("while decoding external api's response body: %w", err)
 	}
+	log.Printf("got %v missing people data from API", len(body.Result))
 	return body.Result, nil
 }
