@@ -8,7 +8,7 @@ import (
 
 func personRelevance(point GeoPoint, person MissingPerson) float64 {
 	minDistance := math.Inf(1)
-	for _, personPosition := range person.GeoPoints {
+	for _, personPosition := range person.Locations {
 		d := formulas.DistanceKM(point.Latitude, point.Longitude, personPosition.Latitude, personPosition.Longitude)
 		if d < minDistance {
 			minDistance = d

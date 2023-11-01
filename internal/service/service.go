@@ -28,14 +28,15 @@ func (l *LocatorService) GetRelevantMissing(aroundPoint GeoPoint) ([]MissingPers
 	allMissing := make([]MissingPerson, len(allMissingModels))
 	for i, m := range allMissingModels {
 		allMissing[i] = MissingPerson{
-			VerticalURL: m.VerticalURL,
-			DateOfLoss:  m.DateOfLoss,
-			GeoPoints:   m.GeoPoints,
+			PhotoURL:   m.VerticalURL,
+			DateOfLoss: m.DateOfLoss,
+			Locations:  m.GeoPoints,
+			Relevance:  personRelevance(aroundPoint, allMissing[i]),
 		}
 	}
 
 	sort.Slice(allMissing, func(i, j int) bool {
-		return personRelevance(aroundPoint, allMissing[i]) > personRelevance(aroundPoint, allMissing[j])
+		return allMissing[i].Relevance > allMissing[i].Relevance
 	})
 	return allMissing[:min(Limit, len(allMissing))], nil
 }

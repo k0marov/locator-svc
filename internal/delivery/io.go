@@ -44,7 +44,7 @@ type MissingPersonResponse struct {
 func EncodeMissingPeopleResponse(w http.ResponseWriter, missing []service.MissingPerson) {
 	resp := make([]MissingPersonResponse, len(missing))
 	for i, m := range missing {
-		resp[i] = MissingPersonResponse{PhotoURL: m.VerticalURL}
+		resp[i] = MissingPersonResponse{PhotoURL: m.PhotoURL}
 	}
 	json.NewEncoder(w).Encode(resp)
 }

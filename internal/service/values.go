@@ -4,9 +4,11 @@ import "gitlab.com/samkomarov/locator-svc.git/internal/core"
 
 // MissingPerson is the main domain entity
 type MissingPerson struct {
-	VerticalURL string
-	DateOfLoss  core.Date
-	GeoPoints   []GeoPoint
+	PhotoURL   string
+	DateOfLoss core.Date
+	Locations  []GeoPoint
+	// Relevance is an indicator of how this person is relevant to the defined location
+	Relevance float64
 }
 
 type GeoPoint struct {
