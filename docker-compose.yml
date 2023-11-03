@@ -4,6 +4,7 @@ services:
   locator-svc:
     build:
       context: .
+    env_file: .env
     container_name: locator-svc
     hostname: locator-svc
     ports:
