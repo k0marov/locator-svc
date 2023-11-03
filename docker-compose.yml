@@ -1,0 +1,11 @@
+version: '2.0'
+
+services:
+  locator-svc:
+    build:
+      context: .
+    container_name: locator-svc
+    hostname: locator-svc
+    env_file: .env.prod
+    ports:
+      - "8080:8080"
