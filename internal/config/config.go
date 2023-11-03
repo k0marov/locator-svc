@@ -9,13 +9,13 @@ type HTTPServerConfig struct {
 	Host string `default:":8080"`
 }
 
-type ExternalAPILocatorConfig struct {
+type LizaAlertAPI struct {
 	EndpointURL string `required:"true"`
 }
 
 type AppConfig struct {
-	HTTPServer HTTPServerConfig
-	LocatorAPI ExternalAPILocatorConfig
+	HTTPServer   HTTPServerConfig
+	LizaAlertAPI LizaAlertAPI
 }
 
 func ReadConfigFromEnv() AppConfig {

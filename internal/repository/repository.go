@@ -17,12 +17,12 @@ const cacheExpirationInterval = 10 * time.Minute
 const missingCacheKey = "missing"
 
 type ExternalAPILocatorRepo struct {
-	cfg    config.ExternalAPILocatorConfig
+	cfg    config.LizaAlertAPI
 	client *retryablehttp.Client
 	cache  *cache.Cache
 }
 
-func NewExternalAPILocatorRepo(cfg config.ExternalAPILocatorConfig) *ExternalAPILocatorRepo {
+func NewExternalAPILocatorRepo(cfg config.LizaAlertAPI) *ExternalAPILocatorRepo {
 	client := retryablehttp.NewClient()
 	client.RetryWaitMax = 30 * time.Second
 

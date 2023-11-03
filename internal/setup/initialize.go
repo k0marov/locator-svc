@@ -10,7 +10,7 @@ import (
 )
 
 func InitializeAndStart(cfg config.AppConfig) {
-	repo := repository.NewExternalAPILocatorRepo(cfg.LocatorAPI)
+	repo := repository.NewExternalAPILocatorRepo(cfg.LizaAlertAPI)
 	svc := service.NewLocatorService(repo)
 	srv := delivery.NewServer(svc)
 	log.Printf("Listening at %s", cfg.HTTPServer.Host)
